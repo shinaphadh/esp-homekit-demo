@@ -27,7 +27,7 @@
 #include <math.h>
 #include <homekit/homekit.h>
 #include <homekit/characteristics.h>
-#include "wifi.h"
+#include "wifi_config.h"
 #include <button.h>
 #include <dht/dht.h>
 void update_state();
