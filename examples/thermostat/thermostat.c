@@ -46,9 +46,9 @@ homekit_characteristic_t target_temperature  = HOMEKIT_CHARACTERISTIC_(
     TARGET_TEMPERATURE, 22, .callback=HOMEKIT_CHARACTERISTIC_CALLBACK(on_update)
 );
 homekit_characteristic_t units = HOMEKIT_CHARACTERISTIC_(TEMPERATURE_DISPLAY_UNITS, 0);
-homekit_characteristic_t current_state = HOMEKIT_CHARACTERISTIC_(CURRENT_HEATING_COOLING_STATE, 1);
+homekit_characteristic_t current_state = HOMEKIT_CHARACTERISTIC_(CURRENT_HEATING_COOLING_STATE, 0);
 homekit_characteristic_t target_state = HOMEKIT_CHARACTERISTIC_(
-    TARGET_HEATING_COOLING_STATE, 1, .valid_values = {.count = 2, .values = (uint8_t[]) { 0, 1}}, .callback=HOMEKIT_CHARACTERISTIC_CALLBACK(on_update)
+    TARGET_HEATING_COOLING_STATE, 0, .callback=HOMEKIT_CHARACTERISTIC_CALLBACK(on_update)
 );
 homekit_characteristic_t cooling_threshold = HOMEKIT_CHARACTERISTIC_(
     COOLING_THRESHOLD_TEMPERATURE, 25, .callback=HOMEKIT_CHARACTERISTIC_CALLBACK(on_update)
@@ -315,7 +315,6 @@ void button_reset_callback(button_event_t event, void* context) {
             sdk_system_restart();
             break;
     }
-    
 }
 void gpio_init(){
     //gpio_set_pullup(TEMPERATURE_SENSOR_PIN, false, false);
