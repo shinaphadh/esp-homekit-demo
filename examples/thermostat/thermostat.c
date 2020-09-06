@@ -6,10 +6,13 @@
 #define TEMPERATURE_POLL_PERIOD 10000 // Temp refresh rate to milliseconds
 #define TEMP_DIFF 0.5 // Set this for differential 
 #define INVERT_RELAY_SWITCH 0
-#define DHT_TYPE DHT_TYPE_DHT22 // If you are using DHT11 change the type to DHT_TYPE_DHT11
+#define DHT_TYPE DHT_TYPE_DHT11 // If you are using DHT11 change the type to DHT_TYPE_DHT11
 #define BUTTON_UP_PIN 12 // GPIO12 is D6 on NodeMCU
 #define BUTTON_DOWN_PIN 13 // GPIO13 is D7 on NodeMCU
 #define BUTTON_RESET_PIN 14 // GPIO14 is D5 on NodeMCU
+#define COOLER_PIN 16
+#define HEATER_FAN_DELAY 30000
+#define COOLER_FAN_DELAY 0
 
 #include <stdio.h>
 #include <espressif/esp_wifi.h>
@@ -151,6 +154,15 @@ void heaterOff() {
 
 }
 
+void coolerOn() {
+    gpio_write(COOLER_PIN, INVERT_RELAY_SWITCH ? false : true);
+}
+
+
+void coolerOff() {
+    gpio_write(COOLER_PIN, INVERT_RELAY_SWITCH ? true : false);
+}
+
 void update_state() {
     uint8_t state = target_state.value.int_value;
     heater_power = state;
@@ -159,20 +171,26 @@ void update_state() {
         if (current_state.value.int_value != 1) {
             current_state.value = HOMEKIT_UINT8(1);
             homekit_characteristic_notify(&current_state, current_state.value);
-            heaterOn();            
+            heaterOn(); 
+            coolerOff();
+            fanOff();			
         }
     } else if ((state == 2 && current_temperature.value.float_value > target_temperature.value.float_value) ||
             (state == 3 && current_temperature.value.float_value > cooling_threshold.value.float_value)) {
         if (current_state.value.int_value != 2) {
             current_state.value = HOMEKIT_UINT8(2);
             homekit_characteristic_notify(&current_state, current_state.value);
+            coolerOn();
             heaterOff();
+            fanOff();
         }
     } else {
         if (current_state.value.int_value != 0) {
             current_state.value = HOMEKIT_UINT8(0);
             homekit_characteristic_notify(&current_state, current_state.value);
+            coolerOff();
             heaterOff();
+            fanOff();
         }
     }
 }
@@ -302,6 +320,7 @@ void button_reset_callback(button_event_t event, void* context) {
 void gpio_init(){
     //gpio_set_pullup(TEMPERATURE_SENSOR_PIN, false, false);
     gpio_enable(HEATER_PIN, GPIO_OUTPUT);
+	gpio_enable(COOLER_PIN, GPIO_OUTPUT);
     gpio_enable(BUTTON_DOWN_PIN, GPIO_INPUT);
     gpio_enable(BUTTON_UP_PIN, GPIO_INPUT);
     gpio_set_pullup(BUTTON_DOWN_PIN, true, true);
@@ -329,4 +348,3 @@ void user_init(void) {
         printf("Failed to initialize button resetwn\n");
     }
 }
-
