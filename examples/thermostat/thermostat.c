@@ -330,7 +330,7 @@ void gpio_init(){
 void user_init(void) {
     uart_set_baud(0, 115200);
     gpio_init();
-    wifi_config_init2("Thermostat", "mythermostat", on_wifi_config_event);
+    wifi_init();
     thermostat_init();
     display_init();
     button_config_t buttonconfig = BUTTON_CONFIG(
