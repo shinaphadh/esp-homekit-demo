@@ -173,7 +173,7 @@ void update_state() {
             homekit_characteristic_notify(&current_state, current_state.value);
             heaterOn(); 
             coolerOff();
-            fanOff();			
+            	
         }
     } else if ((state == 2 && current_temperature.value.float_value > target_temperature.value.float_value) ||
             (state == 3 && current_temperature.value.float_value > cooling_threshold.value.float_value)) {
@@ -182,7 +182,7 @@ void update_state() {
             homekit_characteristic_notify(&current_state, current_state.value);
             coolerOn();
             heaterOff();
-            fanOff();
+            
         }
     } else {
         if (current_state.value.int_value != 0) {
@@ -190,7 +190,7 @@ void update_state() {
             homekit_characteristic_notify(&current_state, current_state.value);
             coolerOff();
             heaterOff();
-            fanOff();
+           
         }
     }
 }
