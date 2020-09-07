@@ -63,8 +63,8 @@ homekit_characteristic_t current_humidity = HOMEKIT_CHARACTERISTIC_(CURRENT_RELA
 #include <ssd1306/ssd1306.h>
 #include <fonts/fonts.h>
 #define I2C_BUS 0
-#define I2C_SDA_PIN 5
-#define I2C_SCL_PIN 4
+#define I2C_SDA_PIN 4
+#define I2C_SCL_PIN 5
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 32
 #define DEFAULT_FONT FONT_FACE_TERMINUS_6X12_ISO8859_1
