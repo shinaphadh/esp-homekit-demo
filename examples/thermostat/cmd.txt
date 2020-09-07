@@ -1,0 +1,6 @@
+mkdir josh10
+cd josh10
+git clone --recursive https://github.com/shinaphadh/esp-homekit-demo.git
+cd esp-homekit-demo
+git submodule update --init --recursive
+make -C examples/thermostat

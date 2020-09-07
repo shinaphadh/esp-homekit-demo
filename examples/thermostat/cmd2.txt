@@ -1,0 +1,33 @@
+minicom --device /dev/ttyUSB0
+
+https://github.com/shinaphadh/esp-homekit-demo.git
+
+git clone --recursive https://github.com/shinaphadh/esp-homekit-demo.git
+
+exit
+//Restart Putty and log in
+
+cd projects
+
+cd esp-homekit-demo
+
+git submodule update --init --recursive
+
+nano wifi.h.sample
+//Edit Wi-Fi SSID and Password
+CTRL+O
+//save as wifi.h
+CTRL+X
+//exits nano
+cd
+export FLASH_SIZE=8
+
+export HOMEKIT_SPI_FLASH_BASE_ADDR=0x7a000
+
+export FLASH_MODE=dout
+
+export ESPPORT=/dev/ttyUSB0
+
+make -C examples/led erase_flash
+
+make -C examples/led flash
