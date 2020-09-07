@@ -1,5 +1,24 @@
 /*
  * Thermostat example
+ *
+ * Wiring is as follows (requires ESP-12 as it needs 4 GPIOs):
+ *
+ * DHT11 (temperature sensor)
+ *
+ *               -------------
+ *              |GND       VCC|    (These go to control pins of relay)
+ *              |15         13| --> Heater
+ *              |2          12| --> Cooler
+ *              |0          14| --> Fan
+ *              |5          16|
+ * DHT Data <-- |4       CH_PD|
+ *              |RXD       ADC|
+ *              |TXD      REST|
+ *               -------------
+ *              |   |-| |-| | |
+ *              | __| |_| |_| |
+ *               -------------
+ *
  */
 #define TEMPERATURE_SENSOR_PIN 2 // GPIO2 is D4 on NodeMCU
 #define HEATER_PIN 14 // GPIO15 is D8 on NodeMCU
@@ -98,11 +117,11 @@ void display_temperature_task(void *_args) {
         // Display temp
         snprintf(str, sizeof(str), "%.1f", temperature);
         ssd1306_fill_rectangle(&display, display_buffer, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, OLED_COLOR_BLACK);
-        //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 0, 0, "Temp", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 0, "Target", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+        ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 0, 0, "Temp", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+        ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 0, "Target", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
 
-        //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 0, 15, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 50, 0, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+        ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 0, 15, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+        //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 50, 0, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
     
         // Display humidity
         //snprintf(str, sizeof(str), "%.1f %%", humidity);

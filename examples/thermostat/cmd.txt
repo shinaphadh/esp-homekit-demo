@@ -1,5 +1,5 @@
-mkdir josh10
-cd josh10
+mkdir josh17
+cd josh17
 git clone --recursive https://github.com/shinaphadh/esp-homekit-demo.git
 cd esp-homekit-demo
 git submodule update --init --recursive
