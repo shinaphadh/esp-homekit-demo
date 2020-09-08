@@ -133,10 +133,18 @@ void display_temperature_task(void *_args) {
             ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 80, 0, "C", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 15, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 104, 0, "\xB0", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 100, 0, "\xB0", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 114, 0, "\x60", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+        }else if (heater_power == 2){
+            snprintf(str, sizeof(str), "%.0f", target_temperature.value.float_value);
+            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+            //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 80, 0, "C", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+            //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 15, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 100, 0, "\xB0", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 114, 0, "\x2e", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         } else {
             snprintf(str, sizeof(str), "--");
-            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 12, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         }
 
         if (ssd1306_load_frame_buffer(&display, display_buffer)) {
