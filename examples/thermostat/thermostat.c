@@ -126,7 +126,7 @@ void display_temperature_task(void *_args) {
         // Display humidity
         //snprintf(str, sizeof(str), "%.1f %%", humidity);
         //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 64, 15, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        printf(heater_power);
+        printf("%d", heater_power);
         // Display target temp    
         if (heater_power){
             snprintf(str, sizeof(str), "%.0f", (target_temperature.value.float_value*1.8) + 32);
