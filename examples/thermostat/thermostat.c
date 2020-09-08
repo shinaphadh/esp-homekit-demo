@@ -244,7 +244,7 @@ void temperature_sensor_task(void *_args) {
         );
         if (success) {
             //printf("Got readings: temperature %g, humidity %g\n", temperature_value, humidity_value);
-            current_temperature.value = HOMEKIT_FLOAT(temperature_value);
+            current_temperature.value = HOMEKIT_FLOAT(temperature_value - SELF_HEATING_DHT_OFFSET);
             current_humidity.value = HOMEKIT_FLOAT(humidity_value);
 
             homekit_characteristic_notify(&current_temperature, current_temperature.value);
@@ -272,9 +272,9 @@ homekit_accessory_t *accessories[] = {
     HOMEKIT_ACCESSORY(.id=1, .category=homekit_accessory_category_thermostat, .services=(homekit_service_t*[]) {
         HOMEKIT_SERVICE(ACCESSORY_INFORMATION, .characteristics=(homekit_characteristic_t*[]) {
             HOMEKIT_CHARACTERISTIC(NAME, "Thermostat"),
-            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "HaPK"),
+            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "JoshD"),
             HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "001"),
-            HOMEKIT_CHARACTERISTIC(MODEL, "SmartThermostat"),
+            HOMEKIT_CHARACTERISTIC(MODEL, "JoshThermostat"),
             HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.1"),
             HOMEKIT_CHARACTERISTIC(IDENTIFY, thermostat_identify),
             NULL
