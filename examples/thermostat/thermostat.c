@@ -51,7 +51,7 @@
 #include <dht/dht.h>
 void update_state();
 static bool heater_power = 1;
-static int state_value = 1;
+uint8_t state_value = 1;
 
 
 void on_update(homekit_characteristic_t *ch, homekit_value_t value, void *context) {
@@ -128,7 +128,7 @@ void display_temperature_task(void *_args) {
         // Display humidity
         //snprintf(str, sizeof(str), "%.1f %%", humidity);
         //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 64, 15, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        printf("%d", heater_power);
+        printf("%d", state_value);
         // Display target temp    
         if (heater_power == 1){
             snprintf(str, sizeof(str), "%.0f", (target_temperature.value.float_value*1.8) + 32);
