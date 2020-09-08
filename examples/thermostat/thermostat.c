@@ -145,11 +145,6 @@ void display_temperature_task(void *_args) {
             ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         }
 
-        if (ssd1306_load_frame_buffer(&display, display_buffer)) {
-            printf("Failed to load buffer for OLED display\n");
-        }
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-		
 		if (state_value == 1){
 			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 114, 0, "\x60", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         }else if (state_value == 2){
@@ -157,6 +152,13 @@ void display_temperature_task(void *_args) {
         } else {
             // doing nothing
         }
+
+        if (ssd1306_load_frame_buffer(&display, display_buffer)) {
+            printf("Failed to load buffer for OLED display\n");
+        }
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+		
+		
 		
     }
 }
