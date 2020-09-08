@@ -106,7 +106,10 @@ static uint8_t display_buffer[DISPLAY_WIDTH * DISPLAY_HEIGHT / 8];
 void display_temperature_task(void *_args) {
     //printf(" TEMP %g, HUM %g, TARGET: %g\n", temperature, humidity, target_temperature.value.float_value);
     while (1) {
-        float temperature = current_temperature.value.float_value;
+        uint8_t state2 = target_state.value.int_value;
+        state_value = state2;
+		
+		float temperature = current_temperature.value.float_value;
         float humidity = current_humidity.value.float_value;
         char str[16];
         //float f = 123.456789;
@@ -128,14 +131,14 @@ void display_temperature_task(void *_args) {
         //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 64, 15, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         printf("%d", heater_power);
         // Display target temp    
-        if (heater_power){
+        if (state_value == 1){
             snprintf(str, sizeof(str), "%.0f", (target_temperature.value.float_value*1.8) + 32);
             ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 80, 0, "C", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 15, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
 			
 			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 114, 0, "\x60", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        }else if (heater_power == 2){
+        }else if (state_value == 2){
             snprintf(str, sizeof(str), "%.0f", target_temperature.value.float_value);
             ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 80, 0, "C", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
