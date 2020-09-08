@@ -1,6 +1,6 @@
-mkdir josh17
-cd josh17
+mkdir josh26
+cd josh26
 git clone --recursive https://github.com/shinaphadh/esp-homekit-demo.git
 cd esp-homekit-demo
 git submodule update --init --recursive
-make -C examples/thermostat
+make -C examples/thermostat erase_flash flash
