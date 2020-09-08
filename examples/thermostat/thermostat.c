@@ -51,7 +51,7 @@
 #include <dht/dht.h>
 void update_state();
 static bool heater_power = 1;
-uint8_t state_value = 1;
+uint8_t state_value = 0;
 
 
 void on_update(homekit_characteristic_t *ch, homekit_value_t value, void *context) {
@@ -91,6 +91,7 @@ homekit_characteristic_t current_humidity = HOMEKIT_CHARACTERISTIC_(CURRENT_RELA
 #define DEFAULT_FONT1 FONT_FACE_TERMINUS_BOLD_12X24_ISO8859_1
 #define DEFAULT_FONT2 FONT_FACE_TERMINUS_BOLD_14X28_ISO8859_1
 #define DEFAULT_FONT3 FONT_FACE_TERMINUS_BOLD_16X32_ISO8859_1
+#define DEFAULT_FONT4 FONT_FACE_TERMINUS_16X32_ISO8859_1
 
 static const ssd1306_t display = {
     .protocol = SSD1306_PROTO_I2C,
@@ -123,26 +124,26 @@ void display_temperature_task(void *_args) {
         //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[SMALL_FONT], 64, 0, "Target", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
 
         ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 0, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 40, 0, "\xB0", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 100, 0, "\xB0", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+        ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 40, 0, "\xB0", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+        ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT4], 100, 0, "\xB0", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         // Display humidity
         //snprintf(str, sizeof(str), "%.1f %%", humidity);
         //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 64, 15, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        printf("%d", state_value);
+        //printf("%d", state_value);
         // Display target temp    
         if (heater_power == 1){
             snprintf(str, sizeof(str), "%.0f", (target_temperature.value.float_value*1.8) + 32);
-            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT4], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 80, 0, "C", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 15, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         }else if (heater_power){
             snprintf(str, sizeof(str), "%.0f", target_temperature.value.float_value);
-            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT4], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 80, 0, "C", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 15, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         } else {
             snprintf(str, sizeof(str), "--");
-            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
+            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT4], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         }
 
 		if (state_value == 1){
