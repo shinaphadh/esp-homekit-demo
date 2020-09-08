@@ -51,6 +51,7 @@
 #include <dht/dht.h>
 void update_state();
 static bool heater_power = 1;
+static int state_value = 1;
 
 
 void on_update(homekit_characteristic_t *ch, homekit_value_t value, void *context) {
