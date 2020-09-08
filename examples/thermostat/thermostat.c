@@ -109,7 +109,7 @@ void display_temperature_task(void *_args) {
     //printf(" TEMP %g, HUM %g, TARGET: %g\n", temperature, humidity, target_temperature.value.float_value);
     while (1) {
 		
-		float temperature = current_temperature.value.float_value - SELF_HEATING_DHT_OFFSET;
+		float temperature = current_temperature.value.float_value;
         float humidity = current_humidity.value.float_value;
         char str[16];
         //float f = 123.456789;
