@@ -22,7 +22,7 @@
  */
 #define TEMPERATURE_SENSOR_PIN 2 // GPIO2 is D4 on NodeMCU
 #define HEATER_PIN 14 // GPIO15 is D8 on NodeMCU
-#define TEMPERATURE_POLL_PERIOD 5000 // Temp refresh rate to milliseconds
+#define TEMPERATURE_POLL_PERIOD 15000 // Temp refresh rate to milliseconds
 #define TEMP_DIFF 0.5 // Set this for differential 
 #define INVERT_RELAY_SWITCH 1
 #define DHT_TYPE DHT_TYPE_DHT11 // If you are using DHT11 change the type to DHT_TYPE_DHT11
@@ -50,7 +50,7 @@
 #include <button.h>
 #include <dht/dht.h>
 void update_state();
-static bool heater_power = 1;
+static bool heater_power = 0;
 uint8_t state_value = 0;
 
 
@@ -118,7 +118,7 @@ void display_temperature_task(void *_args) {
         //ssd1306_display_on(&display, true);
         
         // Display temp
-        snprintf(str, sizeof(str), "%.0f", (temperature*1.8) + 32);
+        snprintf(str, sizeof(str), "%.0f", round((temperature*1.8) + 32));
         ssd1306_fill_rectangle(&display, display_buffer, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, OLED_COLOR_BLACK);
         //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[SMALL_FONT], 0, 0, "Temp", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[SMALL_FONT], 64, 0, "Target", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
@@ -130,14 +130,10 @@ void display_temperature_task(void *_args) {
         //snprintf(str, sizeof(str), "%.1f %%", humidity);
         //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 64, 15, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         //printf("%d", state_value);
-        // Display target temp    
+        
+		// Display target temp    
         if (heater_power == 1){
-            snprintf(str, sizeof(str), "%.0f", (target_temperature.value.float_value*1.8) + 32);
-            ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-            //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 80, 0, "C", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-            //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 15, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        }else if (heater_power){
-            snprintf(str, sizeof(str), "%.0f", target_temperature.value.float_value);
+            snprintf(str, sizeof(str), "%.0f", round((target_temperature.value.float_value*1.8) + 32));
             ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT3], 64, 0, str, OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT1], 80, 0, "C", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
             //ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 15, "°", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
@@ -148,7 +144,7 @@ void display_temperature_task(void *_args) {
 
 		if (state_value == 1){
 			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 114, 0, "\x60", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
-        }else if (state_value == 2){
+        } else if (state_value == 2){
 			ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT2], 114, 0, ".", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         } else {
             // doing nothing
@@ -366,6 +362,7 @@ void gpio_init(){
     gpio_set_pullup(BUTTON_DOWN_PIN, true, true);
     gpio_set_pullup(BUTTON_UP_PIN, true, true);
     heaterOff();
+	coolerOff();
 }
 void user_init(void) {
     uart_set_baud(0, 115200);
