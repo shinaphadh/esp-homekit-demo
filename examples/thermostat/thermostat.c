@@ -115,7 +115,7 @@ void display_temperature_task(void *_args) {
         //ssd1306_display_on(&display, true);
         
         // Display temp
-        snprintf(str, sizeof(str), "%.0f", temperature);
+        snprintf(str, sizeof(str), "%.2f", temperature);
         ssd1306_fill_rectangle(&display, display_buffer, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, OLED_COLOR_BLACK);
         ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 0, 0, "Temp", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
         ssd1306_draw_string(&display, display_buffer, font_builtin_fonts[DEFAULT_FONT], 64, 0, "Target", OLED_COLOR_WHITE, OLED_COLOR_BLACK);
